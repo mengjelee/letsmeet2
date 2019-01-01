@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load  staticfiles %}
+<html>
+<head>
+  <!--<script src="https://unpkg.com/konva@2.4.2/konva.min.js"></script>-->
+  {% block extra_head %}
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <meta charset="utf-8">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/style_result.css' %}" rel="stylesheet" type="text/css" />
+
+ {% endblock %}
+  <title>Let's meet !</title>
+</head>
+
+<body>
+  {% block content %}
+  	<span id="event" class="textContent">{{ eventName }}</span><br>
+
+    <input id="input" type="text" / value='{{ copy }}'>
+    <button id="copy">Copy</button>
+      
+      <ol id="selectable">
+      {% for h in timeChosen%}
+  	  {% for d in dayChosen%}
+        <li id="{{ d }} : {{ h }}">{{ d }}<br>{{ h }}</li>
+      {% endfor %}
+        <br>
+      {% endfor %}
+      </ol>
+
+  <script>
+  
+  // Create Selectable Button//
+  $( function() {
+    $( "#selectable" ).bind("mousedown", function(evt) {
+    evt.metaKey = true;
+    }).selectable({
+      stop: function() {
+        //var freeDay = [];
+        $( ".ui-selected" , this ).each(function() {
+          var id = $( this ).attr('id');
+          //freeDay.push( id );
+          $( "#freeDay" )[0].value = freeDay;
+        });
+      }
+    });
+  } );
+
+  function copy() {
+  var copyText = document.querySelector("#input");
+  copyText.select();
+  document.execCommand("copy");
+  }
+
+  document.querySelector("#copy").addEventListener("click", copy);
+
+  </script>
+  {% endblock %}
+</body>
+</html>
